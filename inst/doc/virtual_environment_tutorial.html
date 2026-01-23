@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2026-01-20" />
+
+<title>Manual Virtual Environment Setup Tutorial</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Manual Virtual Environment Setup
+Tutorial</h1>
+<h4 class="date">2026-01-20</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#prerequisites" id="toc-prerequisites">Prerequisites</a></li>
+<li><a href="#method-1-creating-virtual-environment-with-r-reticulate" id="toc-method-1-creating-virtual-environment-with-r-reticulate">Method
+1: Creating Virtual Environment with R (reticulate)</a>
+<ul>
+<li><a href="#step-1-install-reticulate-if-not-already-installed" id="toc-step-1-install-reticulate-if-not-already-installed">Step 1:
+Install reticulate (if not already installed)</a></li>
+<li><a href="#step-2-check-available-python-versions" id="toc-step-2-check-available-python-versions">Step 2: Check available
+Python versions</a></li>
+<li><a href="#step-3-create-the-virtual-environment" id="toc-step-3-create-the-virtual-environment">Step 3: Create the
+virtual environment</a></li>
+<li><a href="#step-4-activate-the-environment" id="toc-step-4-activate-the-environment">Step 4: Activate the
+environment</a></li>
+<li><a href="#step-5-install-required-packages" id="toc-step-5-install-required-packages">Step 5: Install required
+packages</a></li>
+<li><a href="#step-6-verify-installation" id="toc-step-6-verify-installation">Step 6: Verify installation</a></li>
+</ul></li>
+<li><a href="#method-2-creating-virtual-environment-from-command-line" id="toc-method-2-creating-virtual-environment-from-command-line">Method
+2: Creating Virtual Environment from Command Line</a>
+<ul>
+<li><a href="#step-1-open-terminalcommand-prompt" id="toc-step-1-open-terminalcommand-prompt">Step 1: Open
+terminal/command prompt</a></li>
+<li><a href="#step-2-create-virtual-environment" id="toc-step-2-create-virtual-environment">Step 2: Create virtual
+environment</a></li>
+<li><a href="#step-3-activate-the-environment" id="toc-step-3-activate-the-environment">Step 3: Activate the
+environment</a></li>
+<li><a href="#step-4-upgrade-pip-and-install-packages" id="toc-step-4-upgrade-pip-and-install-packages">Step 4: Upgrade pip and
+install packages</a></li>
+<li><a href="#step-5-verify-installation" id="toc-step-5-verify-installation">Step 5: Verify installation</a></li>
+<li><a href="#step-6-connect-r-to-your-environment" id="toc-step-6-connect-r-to-your-environment">Step 6: Connect R to your
+environment</a></li>
+</ul></li>
+<li><a href="#alternative-using-conda-environment" id="toc-alternative-using-conda-environment">Alternative: Using Conda
+Environment</a>
+<ul>
+<li><a href="#command-line-approach" id="toc-command-line-approach">Command Line Approach:</a></li>
+<li><a href="#r-approach" id="toc-r-approach">R Approach:</a></li>
+</ul></li>
+<li><a href="#troubleshooting-common-issues" id="toc-troubleshooting-common-issues">Troubleshooting Common Issues</a>
+<ul>
+<li><a href="#issue-1-python-not-found" id="toc-issue-1-python-not-found">Issue 1: “Python not found”</a></li>
+<li><a href="#issue-2-permission-denied-errors" id="toc-issue-2-permission-denied-errors">Issue 2: “Permission denied”
+errors</a></li>
+<li><a href="#issue-3-package-installation-fails" id="toc-issue-3-package-installation-fails">Issue 3: Package
+installation fails</a></li>
+<li><a href="#issue-4-ciss-vae-import-fails-in-r" id="toc-issue-4-ciss-vae-import-fails-in-r">Issue 4: CISS-VAE import
+fails in R</a></li>
+<li><a href="#issue-5-environment-not-persisting-between-r-sessions" id="toc-issue-5-environment-not-persisting-between-r-sessions">Issue 5:
+Environment not persisting between R sessions</a></li>
+</ul></li>
+</ul>
+</div>
+
+<p>If the <code>create_cissvae_env()</code> helper function fails or you
+prefer to set up your environment manually, you can create a Python
+virtual environment using either R (via reticulate) or the command
+line.</p>
+<div id="prerequisites" class="section level3">
+<h3>Prerequisites</h3>
+<p>Before starting, ensure you have:</p>
+<ul>
+<li>Python 3.10 or 3.11 installed on your system</li>
+<li>R with the <code>reticulate</code> package installed</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;reticulate&quot;</span>)</span></code></pre></div>
+<p>You can check your Python version by running the following from your
+terminal:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span></code></pre></div>
+<hr />
+</div>
+<div id="method-1-creating-virtual-environment-with-r-reticulate" class="section level2">
+<h2>Method 1: Creating Virtual Environment with R (reticulate)</h2>
+<div id="step-1-install-reticulate-if-not-already-installed" class="section level3">
+<h3>Step 1: Install reticulate (if not already installed)</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;reticulate&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span></code></pre></div>
+</div>
+<div id="step-2-check-available-python-versions" class="section level3">
+<h3>Step 2: Check available Python versions</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Find Python installations on your system</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_discover_config</span>()</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Or check for a specific version</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_starter</span>(<span class="st">&quot;3.10&quot;</span>)</span></code></pre></div>
+<div id="installing-python-via-reticulate-if-needed" class="section level4">
+<h4>Installing Python via reticulate (if needed)</h4>
+<p>If no suitable Python version is found, you can install Python
+directly through reticulate:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Install Python 3.10 (recommended)</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">install_python</span>(<span class="at">version =</span> <span class="st">&quot;3.10&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># Or install Python 3.11</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">install_python</span>(<span class="at">version =</span> <span class="st">&quot;3.11&quot;</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co"># Check available versions after installation</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_versions</span>()</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co"># Verify the installation worked</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_starter</span>(<span class="st">&quot;3.10&quot;</span>)</span></code></pre></div>
+<p><strong>Note:</strong> <code>reticulate::install_python()</code>
+will:</p>
+<ul>
+<li>Download and install a standalone Python version managed by
+reticulate</li>
+<li>Install it to a location that doesn’t interfere with system
+Python</li>
+<li>Work across Windows, macOS, and Linux</li>
+<li>Automatically configure the PATH for reticulate to find it</li>
+</ul>
+<p>If the installation fails or you prefer more control, you can also
+install Python manually:</p>
+<ul>
+<li><strong>Windows</strong>: Download from <a href="https://www.python.org/downloads/windows/">python.org</a> and
+check “Add Python to PATH”</li>
+<li><strong>macOS</strong>: Use Homebrew
+(<code>brew install python@3.10</code>) or download from python.org</li>
+<li><strong>Linux</strong>: Use your package manager
+(<code>sudo apt install python3.10</code> on Ubuntu)</li>
+</ul>
+<p>After manual installation, restart R and rerun
+<code>reticulate::py_discover_config()</code> to verify reticulate can
+find the new Python installation.</p>
+</div>
+</div>
+<div id="step-3-create-the-virtual-environment" class="section level3">
+<h3>Step 3: Create the virtual environment</h3>
+<p>Once you’ve identified the python installation you want to use, you
+can use the reticulate package to create your virtual environment either
+in the default location (<code>~/.virtualenvs/</code>) or in a directory
+of your choice.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Create virtual environment in default location (~/.virtualenvs/)</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_create</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">envname =</span> <span class="st">&quot;cissvae_env&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">python =</span> <span class="cn">NULL</span>,  <span class="co"># Use system default Python</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">packages =</span> <span class="fu">c</span>(<span class="st">&quot;pip&quot;</span>, <span class="st">&quot;setuptools&quot;</span>, <span class="st">&quot;wheel&quot;</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co"># Alternative: Create in a specific directory</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_create</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">envname =</span> <span class="st">&quot;./my_venvs/cissvae_env&quot;</span>,  <span class="co"># Relative path</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">python =</span> <span class="st">&quot;/usr/bin/python3.10&quot;</span>,     <span class="co"># Specific Python version</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">packages =</span> <span class="fu">c</span>(<span class="st">&quot;pip&quot;</span>, <span class="st">&quot;setuptools&quot;</span>, <span class="st">&quot;wheel&quot;</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="step-4-activate-the-environment" class="section level3">
+<h3>Step 4: Activate the environment</h3>
+<p>In order to use your virtual environment, you have to tell reticulate
+to activate and use it with the command below. You will repeat this
+command in each new R session that you want to use the virtual
+environment in.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Activate environment (default location)</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">use_virtualenv</span>(<span class="st">&quot;cissvae_env&quot;</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># Or activate from specific path</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">use_virtualenv</span>(<span class="st">&quot;./my_venvs/cissvae_env&quot;</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="step-5-install-required-packages" class="section level3">
+<h3>Step 5: Install required packages</h3>
+<p>Before using the virtual environment for the first time, install the
+necessary dependencies and the <code>ciss-vae</code> python package to
+the environment. This only needs to be done once per environment (unless
+you want to update the packages later).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Install core dependencies first</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_install</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">envname =</span> <span class="st">&quot;cissvae_env&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">packages =</span> <span class="fu">c</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="st">&quot;numpy&quot;</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="st">&quot;pandas&quot;</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="st">&quot;torch&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    <span class="st">&quot;scikit-learn&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>    <span class="st">&quot;optuna&quot;</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    <span class="st">&quot;rich&quot;</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>    <span class="st">&quot;matplotlib&quot;</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>    <span class="st">&quot;leiden-alg&quot;</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>    <span class="st">&quot;python-igraph&quot;</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>  )</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>)</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co"># Install CISS-VAE from PyPI</span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_install</span>(</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>  <span class="at">envname =</span> <span class="st">&quot;cissvae_env&quot;</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>  <span class="at">packages =</span> <span class="st">&quot;ciss-vae&quot;</span></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="step-6-verify-installation" class="section level3">
+<h3>Step 6: Verify installation</h3>
+<p>After installing the packages, you can use the following commands to
+make sure the ciss_vae package installed correctly.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Check if CISS-VAE installed correctly</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_run_string</span>(<span class="st">&quot;import ciss_vae; print(&#39;CISS-VAE version:&#39;, ciss_vae.__version__)&quot;</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># List all installed packages</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_install</span>(<span class="at">envname =</span> <span class="st">&quot;cissvae_env&quot;</span>, <span class="at">packages =</span> <span class="fu">character</span>(<span class="dv">0</span>))</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="method-2-creating-virtual-environment-from-command-line" class="section level2">
+<h2>Method 2: Creating Virtual Environment from Command Line</h2>
+<div id="step-1-open-terminalcommand-prompt" class="section level3">
+<h3>Step 1: Open terminal/command prompt</h3>
+<p>Navigate to your desired directory:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="bu">cd</span> /path/to/your/project</span></code></pre></div>
+</div>
+<div id="step-2-create-virtual-environment" class="section level3">
+<h3>Step 2: Create virtual environment</h3>
+<p>Please note, python must be installed for this to work.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># Using venv (Python 3.3+)</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv cissvae_env</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co"># Or using python3 explicitly</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv cissvae_env</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co"># For specific Python version</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="ex">python3.10</span> <span class="at">-m</span> venv cissvae_env</span></code></pre></div>
+</div>
+<div id="step-3-activate-the-environment" class="section level3">
+<h3>Step 3: Activate the environment</h3>
+<p><strong>On Windows:</strong></p>
+<p>On Windows OS, the command to activate the environment differs based
+on the terminal you are using.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># Command Prompt</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="ex">cissvae_env\Scripts\activate</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co"># PowerShell</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="ex">cissvae_env\Scripts\Activate.ps1</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co"># Git Bash</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="bu">source</span> cissvae_env/Scripts/activate</span></code></pre></div>
+<p><strong>On macOS/Linux:</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="bu">source</span> cissvae_env/bin/activate</span></code></pre></div>
+<p>You should see <code>(cissvae_env)</code> at the beginning of your
+prompt when activated.</p>
+</div>
+<div id="step-4-upgrade-pip-and-install-packages" class="section level3">
+<h3>Step 4: Upgrade pip and install packages</h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Upgrade pip first (optional)</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">--upgrade</span> pip setuptools wheel</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co"># Install core scientific packages</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="ex">pip</span> install numpy pandas matplotlib scikit-learn</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co"># Install machine learning frameworks</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="ex">pip</span> install torch optuna rich hdbscan</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co"># Install CISS-VAE</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="ex">pip</span> install ciss-vae</span></code></pre></div>
+</div>
+<div id="step-5-verify-installation" class="section level3">
+<h3>Step 5: Verify installation</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Check Python version in environment</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co"># List installed packages</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="ex">pip</span> list</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co"># Test CISS-VAE import</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="ex">python</span> <span class="at">-c</span> <span class="st">&quot;import ciss_vae; print(&#39;CISS-VAE installed successfully!&#39;)&quot;</span></span></code></pre></div>
+</div>
+<div id="step-6-connect-r-to-your-environment" class="section level3">
+<h3>Step 6: Connect R to your environment</h3>
+<p>After creating the environment via command line, tell R where to find
+it:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co"># Point to your manually created environment</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">use_virtualenv</span>(<span class="st">&quot;/path/to/your/project/cissvae_env&quot;</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co"># On Windows, the path might look like:</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co"># reticulate::use_virtualenv(&quot;C:/Users/YourName/project/cissvae_env&quot;, required = TRUE)</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co"># Verify connection</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_config</span>()</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="alternative-using-conda-environment" class="section level2">
+<h2>Alternative: Using Conda Environment</h2>
+<p>If you prefer conda over venv:</p>
+<div id="command-line-approach" class="section level3">
+<h3>Command Line Approach:</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Create conda environment</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> cissvae_env python=3.10</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="co"># Activate environment</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="ex">conda</span> activate cissvae_env</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co"># Install packages</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="ex">conda</span> install numpy pandas matplotlib scikit-learn</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="ex">pip</span> install torch optuna rich hdbscan ciss-vae</span></code></pre></div>
+</div>
+<div id="r-approach" class="section level3">
+<h3>R Approach:</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># Create conda environment from R</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">conda_create</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="at">envname =</span> <span class="st">&quot;cissvae_env&quot;</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  <span class="at">python_version =</span> <span class="st">&quot;3.10&quot;</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>  <span class="at">packages =</span> <span class="fu">c</span>(<span class="st">&quot;numpy&quot;</span>, <span class="st">&quot;pandas&quot;</span>, <span class="st">&quot;matplotlib&quot;</span>, <span class="st">&quot;scikit-learn&quot;</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>)</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co"># Activate and install additional packages</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">use_condaenv</span>(<span class="st">&quot;cissvae_env&quot;</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">conda_install</span>(<span class="st">&quot;cissvae_env&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;torch&quot;</span>, <span class="st">&quot;optuna&quot;</span>, <span class="st">&quot;rich&quot;</span>, <span class="st">&quot;hdbscan&quot;</span>, <span class="st">&quot;ciss-vae&quot;</span>))</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="troubleshooting-common-issues" class="section level2">
+<h2>Troubleshooting Common Issues</h2>
+<div id="issue-1-python-not-found" class="section level3">
+<h3>Issue 1: “Python not found”</h3>
+<p><strong>Solution:</strong> Ensure Python is in your system PATH, or
+specify the full path:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_create</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="at">envname =</span> <span class="st">&quot;cissvae_env&quot;</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="at">python =</span> <span class="st">&quot;/usr/local/bin/python3.10&quot;</span>  <span class="co"># Full path to Python</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="issue-2-permission-denied-errors" class="section level3">
+<h3>Issue 2: “Permission denied” errors</h3>
+<p><strong>Solution:</strong></p>
+<ul>
+<li>On Windows: Run R/RStudio as Administrator</li>
+<li>On macOS/Linux: Check directory permissions or use a different
+location</li>
+</ul>
+</div>
+<div id="issue-3-package-installation-fails" class="section level3">
+<h3>Issue 3: Package installation fails</h3>
+<p><strong>Solution:</strong> Install packages one by one to identify
+the problematic package:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;numpy&quot;</span>, <span class="st">&quot;pandas&quot;</span>, <span class="st">&quot;torch&quot;</span>, <span class="st">&quot;ciss-vae&quot;</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="cf">for</span> (pkg <span class="cf">in</span> packages) {</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;Installing&quot;</span>, pkg, <span class="st">&quot;...</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  reticulate<span class="sc">::</span><span class="fu">virtualenv_install</span>(<span class="st">&quot;cissvae_env&quot;</span>, pkg)</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="issue-4-ciss-vae-import-fails-in-r" class="section level3">
+<h3>Issue 4: CISS-VAE import fails in R</h3>
+<p><strong>Solution:</strong> Verify the environment is properly
+activated:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># Check Python configuration</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_config</span>()</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="co"># Test import manually</span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_run_string</span>(<span class="st">&quot;</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="st">try:</span></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="st">    import ciss_vae</span></span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="st">    print(&#39;Success: ciss_vae imported&#39;)</span></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="st">    print(&#39;Version:&#39;, ciss_vae.__version__)</span></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="st">except ImportError as e:</span></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="st">    print(&#39;Error importing ciss_vae:&#39;, e)</span></span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a><span class="st">&quot;</span>)</span></code></pre></div>
+</div>
+<div id="issue-5-environment-not-persisting-between-r-sessions" class="section level3">
+<h3>Issue 5: Environment not persisting between R sessions</h3>
+<p><strong>Solution:</strong> Always activate your environment at the
+start of each R session:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="co"># Add this to the top of your R scripts</span></span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">use_virtualenv</span>(<span class="st">&quot;cissvae_env&quot;</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co"># Or add to your .Rprofile for automatic loading</span></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&#39;reticulate::use_virtualenv(&quot;cissvae_env&quot;, required = TRUE)</span><span class="sc">\n</span><span class="st">&#39;</span>, </span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>    <span class="at">file =</span> <span class="st">&quot;~/.Rprofile&quot;</span>, <span class="at">append =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

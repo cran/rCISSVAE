@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2026-01-20" />
+
+<title>Summary Functions</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Summary Functions</h1>
+<h4 class="date">2026-01-20</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#per-cluster-summary" id="toc-per-cluster-summary">Per-cluster Summary</a></li>
+<li><a href="#missingness-heatmap" id="toc-missingness-heatmap">Missingness Heatmap</a></li>
+<li><a href="#by-cluster-imputation-loss-function" id="toc-by-cluster-imputation-loss-function">By-cluster imputation loss
+function</a></li>
+</ul>
+</div>
+
+<p>There are two summary functions included with the rCISSVAE package
+that can help visualize the data clusters and model suitability to the
+data.</p>
+<div id="per-cluster-summary" class="section level2">
+<h2>Per-cluster Summary</h2>
+<p>The <code>cluster_summary()</code> function creates a data summary
+table stratified by missingness cluster. The function builds on
+<code>gtsummary::tbl_summary()</code>, so gtsummary-like statistics can
+be used for summarizing variables
+(<a href="https://www.danieldsjoberg.com/gtsummary/reference/tbl_summary.html?q=statistic#statistic-argument">
+see tbl_summary() documentation for details </a>).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(rCISSVAE)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">data</span>(df_missing)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="fu">data</span>(clusters)</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="do">## Integer clusters must be passed in as a factor</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">cluster_summary</span>(<span class="at">data =</span> df_missing, <span class="fu">factor</span>(clusters<span class="sc">$</span>clusters), </span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="at">include =</span> <span class="fu">setdiff</span>(<span class="fu">names</span>(df_missing), <span class="st">&quot;index&quot;</span>), </span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="at">statistic =</span> <span class="fu">list</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>  <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">&quot;{mean} ({sd})&quot;</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>  <span class="fu">all_categorical</span>() <span class="sc">~</span> <span class="st">&quot;{n} / {N}</span><span class="sc">\n</span><span class="st"> ({p}%)&quot;</span>), </span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>  <span class="at">missing =</span> <span class="st">&quot;always&quot;</span>)</span></code></pre></div>
+<div id="qeayjdrzqo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qeayjdrzqo table {
+font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+#qeayjdrzqo thead, #qeayjdrzqo tbody, #qeayjdrzqo tfoot, #qeayjdrzqo tr, #qeayjdrzqo td, #qeayjdrzqo th {
+border-style: none;
+}
+#qeayjdrzqo p {
+margin: 0;
+padding: 0;
+}
+#qeayjdrzqo .gt_table {
+display: table;
+border-collapse: collapse;
+line-height: normal;
+margin-left: auto;
+margin-right: auto;
+color: #333333;
+font-size: 16px;
+font-weight: normal;
+font-style: normal;
+background-color: #FFFFFF;
+width: auto;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #A8A8A8;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #A8A8A8;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_caption {
+padding-top: 4px;
+padding-bottom: 4px;
+}
+#qeayjdrzqo .gt_title {
+color: #333333;
+font-size: 125%;
+font-weight: initial;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-color: #FFFFFF;
+border-bottom-width: 0;
+}
+#qeayjdrzqo .gt_subtitle {
+color: #333333;
+font-size: 85%;
+font-weight: initial;
+padding-top: 3px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-color: #FFFFFF;
+border-top-width: 0;
+}
+#qeayjdrzqo .gt_heading {
+background-color: #FFFFFF;
+text-align: center;
+border-bottom-color: #FFFFFF;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_bottom_border {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_col_headings {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_col_heading {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 6px;
+padding-left: 5px;
+padding-right: 5px;
+overflow-x: hidden;
+}
+#qeayjdrzqo .gt_column_spanner_outer {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: normal;
+text-transform: inherit;
+padding-top: 0;
+padding-bottom: 0;
+padding-left: 4px;
+padding-right: 4px;
+}
+#qeayjdrzqo .gt_column_spanner_outer:first-child {
+padding-left: 0;
+}
+#qeayjdrzqo .gt_column_spanner_outer:last-child {
+padding-right: 0;
+}
+#qeayjdrzqo .gt_column_spanner {
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: bottom;
+padding-top: 5px;
+padding-bottom: 5px;
+overflow-x: hidden;
+display: inline-block;
+width: 100%;
+}
+#qeayjdrzqo .gt_spanner_row {
+border-bottom-style: hidden;
+}
+#qeayjdrzqo .gt_group_heading {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+text-align: left;
+}
+#qeayjdrzqo .gt_empty_group_heading {
+padding: 0.5px;
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+vertical-align: middle;
+}
+#qeayjdrzqo .gt_from_md > :first-child {
+margin-top: 0;
+}
+#qeayjdrzqo .gt_from_md > :last-child {
+margin-bottom: 0;
+}
+#qeayjdrzqo .gt_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+margin: 10px;
+border-top-style: solid;
+border-top-width: 1px;
+border-top-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 1px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 1px;
+border-right-color: #D3D3D3;
+vertical-align: middle;
+overflow-x: hidden;
+}
+#qeayjdrzqo .gt_stub {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+}
+#qeayjdrzqo .gt_stub_row_group {
+color: #333333;
+background-color: #FFFFFF;
+font-size: 100%;
+font-weight: initial;
+text-transform: inherit;
+border-right-style: solid;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+padding-left: 5px;
+padding-right: 5px;
+vertical-align: top;
+}
+#qeayjdrzqo .gt_row_group_first td {
+border-top-width: 2px;
+}
+#qeayjdrzqo .gt_row_group_first th {
+border-top-width: 2px;
+}
+#qeayjdrzqo .gt_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#qeayjdrzqo .gt_first_summary_row {
+border-top-style: solid;
+border-top-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_first_summary_row.thick {
+border-top-width: 2px;
+}
+#qeayjdrzqo .gt_last_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_grand_summary_row {
+color: #333333;
+background-color: #FFFFFF;
+text-transform: inherit;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#qeayjdrzqo .gt_first_grand_summary_row {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-top-style: double;
+border-top-width: 6px;
+border-top-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_last_grand_summary_row_top {
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 5px;
+padding-right: 5px;
+border-bottom-style: double;
+border-bottom-width: 6px;
+border-bottom-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_striped {
+background-color: rgba(128, 128, 128, 0.05);
+}
+#qeayjdrzqo .gt_table_body {
+border-top-style: solid;
+border-top-width: 2px;
+border-top-color: #D3D3D3;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_footnotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_footnote {
+margin: 0px;
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#qeayjdrzqo .gt_sourcenotes {
+color: #333333;
+background-color: #FFFFFF;
+border-bottom-style: none;
+border-bottom-width: 2px;
+border-bottom-color: #D3D3D3;
+border-left-style: none;
+border-left-width: 2px;
+border-left-color: #D3D3D3;
+border-right-style: none;
+border-right-width: 2px;
+border-right-color: #D3D3D3;
+}
+#qeayjdrzqo .gt_sourcenote {
+font-size: 90%;
+padding-top: 4px;
+padding-bottom: 4px;
+padding-left: 5px;
+padding-right: 5px;
+}
+#qeayjdrzqo .gt_left {
+text-align: left;
+}
+#qeayjdrzqo .gt_center {
+text-align: center;
+}
+#qeayjdrzqo .gt_right {
+text-align: right;
+font-variant-numeric: tabular-nums;
+}
+#qeayjdrzqo .gt_font_normal {
+font-weight: normal;
+}
+#qeayjdrzqo .gt_font_bold {
+font-weight: bold;
+}
+#qeayjdrzqo .gt_font_italic {
+font-style: italic;
+}
+#qeayjdrzqo .gt_super {
+font-size: 65%;
+}
+#qeayjdrzqo .gt_footnote_marks {
+font-size: 75%;
+vertical-align: 0.4em;
+position: initial;
+}
+#qeayjdrzqo .gt_asterisk {
+font-size: 100%;
+vertical-align: 0;
+}
+#qeayjdrzqo .gt_indent_1 {
+text-indent: 5px;
+}
+#qeayjdrzqo .gt_indent_2 {
+text-indent: 10px;
+}
+#qeayjdrzqo .gt_indent_3 {
+text-indent: 15px;
+}
+#qeayjdrzqo .gt_indent_4 {
+text-indent: 20px;
+}
+#qeayjdrzqo .gt_indent_5 {
+text-indent: 25px;
+}
+#qeayjdrzqo .katex-display {
+display: inline-flex !important;
+margin-bottom: 0.75em !important;
+}
+#qeayjdrzqo div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+height: 0px !important;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="label"><span class="gt_from_md"><strong>Characteristic</strong></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="n"><span class="gt_from_md"><strong>N</strong></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_1"><span class="gt_from_md"><strong>0</strong><br />
+N = 2,000</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_2"><span class="gt_from_md"><strong>1</strong><br />
+N = 2,000</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_3"><span class="gt_from_md"><strong>2</strong><br />
+N = 2,000</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="stat_4"><span class="gt_from_md"><strong>3</strong><br />
+N = 2,000</span><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="label" class="gt_row gt_left">Age</td>
+<td headers="n" class="gt_row gt_center">8,000</td>
+<td headers="stat_1" class="gt_row gt_center">10.10 (2.04)</td>
+<td headers="stat_2" class="gt_row gt_center">10.19 (2.08)</td>
+<td headers="stat_3" class="gt_row gt_center">10.21 (2.14)</td>
+<td headers="stat_4" class="gt_row gt_center">10.29 (2.06)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">0</td>
+<td headers="stat_2" class="gt_row gt_center">0</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">0</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Salary</td>
+<td headers="n" class="gt_row gt_center">8,000</td>
+<td headers="stat_1" class="gt_row gt_center">5.81 (0.61)</td>
+<td headers="stat_2" class="gt_row gt_center">5.83 (0.62)</td>
+<td headers="stat_3" class="gt_row gt_center">5.83 (0.61)</td>
+<td headers="stat_4" class="gt_row gt_center">5.81 (0.60)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">0</td>
+<td headers="stat_2" class="gt_row gt_center">0</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">0</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">ZipCode10001</td>
+<td headers="n" class="gt_row gt_center">8,000</td>
+<td headers="stat_1" class="gt_row gt_center">646 / 2,000
+(32%)</td>
+<td headers="stat_2" class="gt_row gt_center">674 / 2,000
+(34%)</td>
+<td headers="stat_3" class="gt_row gt_center">663 / 2,000
+(33%)</td>
+<td headers="stat_4" class="gt_row gt_center">645 / 2,000
+(32%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">0</td>
+<td headers="stat_2" class="gt_row gt_center">0</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">0</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">ZipCode20002</td>
+<td headers="n" class="gt_row gt_center">8,000</td>
+<td headers="stat_1" class="gt_row gt_center">703 / 2,000
+(35%)</td>
+<td headers="stat_2" class="gt_row gt_center">652 / 2,000
+(33%)</td>
+<td headers="stat_3" class="gt_row gt_center">655 / 2,000
+(33%)</td>
+<td headers="stat_4" class="gt_row gt_center">687 / 2,000
+(34%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">0</td>
+<td headers="stat_2" class="gt_row gt_center">0</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">0</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">ZipCode30003</td>
+<td headers="n" class="gt_row gt_center">8,000</td>
+<td headers="stat_1" class="gt_row gt_center">651 / 2,000
+(33%)</td>
+<td headers="stat_2" class="gt_row gt_center">674 / 2,000
+(34%)</td>
+<td headers="stat_3" class="gt_row gt_center">682 / 2,000
+(34%)</td>
+<td headers="stat_4" class="gt_row gt_center">668 / 2,000
+(33%)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">0</td>
+<td headers="stat_2" class="gt_row gt_center">0</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">0</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y11</td>
+<td headers="n" class="gt_row gt_center">4,878</td>
+<td headers="stat_1" class="gt_row gt_center">-21 (10)</td>
+<td headers="stat_2" class="gt_row gt_center">-16 (9)</td>
+<td headers="stat_3" class="gt_row gt_center">8 (5)</td>
+<td headers="stat_4" class="gt_row gt_center">-3 (6)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,281</td>
+<td headers="stat_2" class="gt_row gt_center">1,288</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">553</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y12</td>
+<td headers="n" class="gt_row gt_center">4,882</td>
+<td headers="stat_1" class="gt_row gt_center">69 (11)</td>
+<td headers="stat_2" class="gt_row gt_center">-26 (9)</td>
+<td headers="stat_3" class="gt_row gt_center">55 (6)</td>
+<td headers="stat_4" class="gt_row gt_center">-24 (8)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,264</td>
+<td headers="stat_2" class="gt_row gt_center">1,283</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">571</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y13</td>
+<td headers="n" class="gt_row gt_center">4,890</td>
+<td headers="stat_1" class="gt_row gt_center">77 (12)</td>
+<td headers="stat_2" class="gt_row gt_center">-25 (9)</td>
+<td headers="stat_3" class="gt_row gt_center">98 (12)</td>
+<td headers="stat_4" class="gt_row gt_center">-17 (7)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,289</td>
+<td headers="stat_2" class="gt_row gt_center">1,264</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">557</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y14</td>
+<td headers="n" class="gt_row gt_center">4,871</td>
+<td headers="stat_1" class="gt_row gt_center">73 (12)</td>
+<td headers="stat_2" class="gt_row gt_center">-21 (8)</td>
+<td headers="stat_3" class="gt_row gt_center">125 (16)</td>
+<td headers="stat_4" class="gt_row gt_center">-11 (6)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,300</td>
+<td headers="stat_2" class="gt_row gt_center">1,283</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">546</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y15</td>
+<td headers="n" class="gt_row gt_center">4,859</td>
+<td headers="stat_1" class="gt_row gt_center">76 (12)</td>
+<td headers="stat_2" class="gt_row gt_center">-12 (6)</td>
+<td headers="stat_3" class="gt_row gt_center">141 (19)</td>
+<td headers="stat_4" class="gt_row gt_center">-14 (6)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,273</td>
+<td headers="stat_2" class="gt_row gt_center">1,293</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">575</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y21</td>
+<td headers="n" class="gt_row gt_center">4,865</td>
+<td headers="stat_1" class="gt_row gt_center">-33 (12)</td>
+<td headers="stat_2" class="gt_row gt_center">-28 (11)</td>
+<td headers="stat_3" class="gt_row gt_center">1 (7)</td>
+<td headers="stat_4" class="gt_row gt_center">-12 (7)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,266</td>
+<td headers="stat_2" class="gt_row gt_center">1,292</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">577</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y22</td>
+<td headers="n" class="gt_row gt_center">4,906</td>
+<td headers="stat_1" class="gt_row gt_center">69 (12)</td>
+<td headers="stat_2" class="gt_row gt_center">-40 (12)</td>
+<td headers="stat_3" class="gt_row gt_center">54 (6)</td>
+<td headers="stat_4" class="gt_row gt_center">-36 (10)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,266</td>
+<td headers="stat_2" class="gt_row gt_center">1,276</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">552</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y23</td>
+<td headers="n" class="gt_row gt_center">4,902</td>
+<td headers="stat_1" class="gt_row gt_center">79 (13)</td>
+<td headers="stat_2" class="gt_row gt_center">-38 (11)</td>
+<td headers="stat_3" class="gt_row gt_center">104 (13)</td>
+<td headers="stat_4" class="gt_row gt_center">-29 (9)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,273</td>
+<td headers="stat_2" class="gt_row gt_center">1,275</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">550</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y24</td>
+<td headers="n" class="gt_row gt_center">4,854</td>
+<td headers="stat_1" class="gt_row gt_center">75 (12)</td>
+<td headers="stat_2" class="gt_row gt_center">-32 (10)</td>
+<td headers="stat_3" class="gt_row gt_center">135 (18)</td>
+<td headers="stat_4" class="gt_row gt_center">-22 (7)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,302</td>
+<td headers="stat_2" class="gt_row gt_center">1,287</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">557</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y25</td>
+<td headers="n" class="gt_row gt_center">4,894</td>
+<td headers="stat_1" class="gt_row gt_center">78 (13)</td>
+<td headers="stat_2" class="gt_row gt_center">-22 (8)</td>
+<td headers="stat_3" class="gt_row gt_center">153 (21)</td>
+<td headers="stat_4" class="gt_row gt_center">-25 (8)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">1,257</td>
+<td headers="stat_2" class="gt_row gt_center">1,294</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">555</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y31</td>
+<td headers="n" class="gt_row gt_center">5,933</td>
+<td headers="stat_1" class="gt_row gt_center">-18 (10)</td>
+<td headers="stat_2" class="gt_row gt_center">-13 (9)</td>
+<td headers="stat_3" class="gt_row gt_center">13 (5)</td>
+<td headers="stat_4" class="gt_row gt_center">1 (6)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">192</td>
+<td headers="stat_2" class="gt_row gt_center">1,285</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">590</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y32</td>
+<td headers="n" class="gt_row gt_center">5,944</td>
+<td headers="stat_1" class="gt_row gt_center">74 (11)</td>
+<td headers="stat_2" class="gt_row gt_center">-24 (10)</td>
+<td headers="stat_3" class="gt_row gt_center">62 (7)</td>
+<td headers="stat_4" class="gt_row gt_center">-21 (8)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">206</td>
+<td headers="stat_2" class="gt_row gt_center">1,287</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">563</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y33</td>
+<td headers="n" class="gt_row gt_center">5,987</td>
+<td headers="stat_1" class="gt_row gt_center">84 (13)</td>
+<td headers="stat_2" class="gt_row gt_center">-23 (10)</td>
+<td headers="stat_3" class="gt_row gt_center">108 (13)</td>
+<td headers="stat_4" class="gt_row gt_center">-14 (7)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">203</td>
+<td headers="stat_2" class="gt_row gt_center">1,267</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">543</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y34</td>
+<td headers="n" class="gt_row gt_center">5,949</td>
+<td headers="stat_1" class="gt_row gt_center">81 (13)</td>
+<td headers="stat_2" class="gt_row gt_center">-17 (8)</td>
+<td headers="stat_3" class="gt_row gt_center">136 (17)</td>
+<td headers="stat_4" class="gt_row gt_center">-7 (6)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">195</td>
+<td headers="stat_2" class="gt_row gt_center">1,275</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">581</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y35</td>
+<td headers="n" class="gt_row gt_center">5,946</td>
+<td headers="stat_1" class="gt_row gt_center">83 (13)</td>
+<td headers="stat_2" class="gt_row gt_center">-8 (6)</td>
+<td headers="stat_3" class="gt_row gt_center">153 (20)</td>
+<td headers="stat_4" class="gt_row gt_center">-10 (7)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">204</td>
+<td headers="stat_2" class="gt_row gt_center">1,285</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">565</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y41</td>
+<td headers="n" class="gt_row gt_center">5,968</td>
+<td headers="stat_1" class="gt_row gt_center">-8 (4)</td>
+<td headers="stat_2" class="gt_row gt_center">-5 (3)</td>
+<td headers="stat_3" class="gt_row gt_center">6 (2)</td>
+<td headers="stat_4" class="gt_row gt_center">1 (2)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">184</td>
+<td headers="stat_2" class="gt_row gt_center">1,279</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">569</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y42</td>
+<td headers="n" class="gt_row gt_center">5,978</td>
+<td headers="stat_1" class="gt_row gt_center">35 (6)</td>
+<td headers="stat_2" class="gt_row gt_center">-11 (4)</td>
+<td headers="stat_3" class="gt_row gt_center">29 (4)</td>
+<td headers="stat_4" class="gt_row gt_center">-9 (3)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">199</td>
+<td headers="stat_2" class="gt_row gt_center">1,282</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">541</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y43</td>
+<td headers="n" class="gt_row gt_center">5,987</td>
+<td headers="stat_1" class="gt_row gt_center">39 (7)</td>
+<td headers="stat_2" class="gt_row gt_center">-10 (3)</td>
+<td headers="stat_3" class="gt_row gt_center">49 (6)</td>
+<td headers="stat_4" class="gt_row gt_center">-6 (3)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">217</td>
+<td headers="stat_2" class="gt_row gt_center">1,242</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">554</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y44</td>
+<td headers="n" class="gt_row gt_center">5,977</td>
+<td headers="stat_1" class="gt_row gt_center">37 (7)</td>
+<td headers="stat_2" class="gt_row gt_center">-8 (3)</td>
+<td headers="stat_3" class="gt_row gt_center">62 (9)</td>
+<td headers="stat_4" class="gt_row gt_center">-3 (2)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">186</td>
+<td headers="stat_2" class="gt_row gt_center">1,280</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">557</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y45</td>
+<td headers="n" class="gt_row gt_center">5,914</td>
+<td headers="stat_1" class="gt_row gt_center">39 (7)</td>
+<td headers="stat_2" class="gt_row gt_center">-4 (3)</td>
+<td headers="stat_3" class="gt_row gt_center">70 (10)</td>
+<td headers="stat_4" class="gt_row gt_center">-5 (2)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">204</td>
+<td headers="stat_2" class="gt_row gt_center">1,305</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">577</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y51</td>
+<td headers="n" class="gt_row gt_center">5,923</td>
+<td headers="stat_1" class="gt_row gt_center">-5.4 (3.6)</td>
+<td headers="stat_2" class="gt_row gt_center">-2.9 (3.0)</td>
+<td headers="stat_3" class="gt_row gt_center">6.9 (1.9)</td>
+<td headers="stat_4" class="gt_row gt_center">2.5 (2.0)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">222</td>
+<td headers="stat_2" class="gt_row gt_center">1,279</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">576</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y52</td>
+<td headers="n" class="gt_row gt_center">5,966</td>
+<td headers="stat_1" class="gt_row gt_center">32 (5)</td>
+<td headers="stat_2" class="gt_row gt_center">-8 (3)</td>
+<td headers="stat_3" class="gt_row gt_center">26 (3)</td>
+<td headers="stat_4" class="gt_row gt_center">-6 (3)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">209</td>
+<td headers="stat_2" class="gt_row gt_center">1,283</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">542</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y53</td>
+<td headers="n" class="gt_row gt_center">6,024</td>
+<td headers="stat_1" class="gt_row gt_center">35 (6)</td>
+<td headers="stat_2" class="gt_row gt_center">-6 (3)</td>
+<td headers="stat_3" class="gt_row gt_center">44 (6)</td>
+<td headers="stat_4" class="gt_row gt_center">-3 (2)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">184</td>
+<td headers="stat_2" class="gt_row gt_center">1,243</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">549</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y54</td>
+<td headers="n" class="gt_row gt_center">5,953</td>
+<td headers="stat_1" class="gt_row gt_center">34 (6)</td>
+<td headers="stat_2" class="gt_row gt_center">-5 (3)</td>
+<td headers="stat_3" class="gt_row gt_center">55 (7)</td>
+<td headers="stat_4" class="gt_row gt_center">-1 (2)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">217</td>
+<td headers="stat_2" class="gt_row gt_center">1,281</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">549</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">Y55</td>
+<td headers="n" class="gt_row gt_center">5,950</td>
+<td headers="stat_1" class="gt_row gt_center">35 (6)</td>
+<td headers="stat_2" class="gt_row gt_center">-2 (2)</td>
+<td headers="stat_3" class="gt_row gt_center">62 (9)</td>
+<td headers="stat_4" class="gt_row gt_center">-2 (2)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left">    Unknown</td>
+<td headers="n" class="gt_row gt_center"><br /></td>
+<td headers="stat_1" class="gt_row gt_center">207</td>
+<td headers="stat_2" class="gt_row gt_center">1,292</td>
+<td headers="stat_3" class="gt_row gt_center">0</td>
+<td headers="stat_4" class="gt_row gt_center">551</td></tr>
+  </tbody>
+  <tfoot>
+    <tr class="gt_footnotes">
+      <td class="gt_footnote" colspan="6"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> <span class="gt_from_md">Mean (SD); n / N
+(%)</span></td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+<div id="missingness-heatmap" class="section level2">
+<h2>Missingness Heatmap</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">cluster_heatmap</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">data =</span> df_missing, </span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">clusters =</span> <span class="fu">paste0</span>(<span class="st">&quot;Cluster &quot;</span>, clusters<span class="sc">$</span>clusters), <span class="do">## Adds &#39;Cluster&#39; to the cluster label</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">cols_ignore =</span> <span class="st">&quot;index&quot;</span>, </span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">observed_color =</span> <span class="st">&quot;#23013aff&quot;</span>, <span class="do">## A dark purple</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">missing_color =</span> <span class="st">&quot;yellow&quot;</span>)</span></code></pre></div>
+<pre><code>## `use_raster` is automatically set to TRUE for a matrix with more than
+## 2000 columns You can control `use_raster` argument by explicitly
+## setting TRUE/FALSE to it.
+## 
+## Set `ht_opt$message = FALSE` to turn off this message.</code></pre>
+<pre><code>## &#39;magick&#39; package is suggested to install to give better rasterization.
+## 
+## Set `ht_opt$message = FALSE` to turn off this message.</code></pre>
+<p><img role="img" src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="by-cluster-imputation-loss-function" class="section level2">
+<h2>By-cluster imputation loss function</h2>
+<p>After running the model, you can get the per-cluster validation set
+imputation loss using the <code>performance_by_cluster()</code>
+function. Set ‘return_validation_dataset = TRUE’ in the
+<code>run_cissvae()</code> function to be able to use
+performance_by_cluster on the result object. If the validation dataset
+(val_data in result object) and imputed validation dataset (val_imputed
+in the result object) are not returned, the imputation loss cannot be
+calculated.</p>
+<p>If the <code>run_cissvae()</code> function was used to generate
+clusters, set <code>return_clusters=TRUE</code> and the clusters will be
+part of the return object. Otherwise, use the ‘clusters’ parameter in
+<code>performance_by_cluster()</code> to input the clusters.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>result <span class="ot">=</span> <span class="fu">run_cissvae</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">data =</span> df_missing,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">index_col =</span> <span class="st">&quot;index&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  <span class="at">val_proportion =</span> <span class="fl">0.1</span>, <span class="do">## pass a vector for different proportions by cluster</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">columns_ignore =</span> <span class="fu">c</span>(<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Salary&quot;</span>, <span class="st">&quot;ZipCode10001&quot;</span>, <span class="st">&quot;ZipCode20002&quot;</span>, <span class="st">&quot;ZipCode30003&quot;</span>), <span class="do">## If there are columns in addition to the index you want to ignore when selecting validation set, list them here. In this case, we ignore the &#39;demographic&#39; columns because we do not want to remove data from them for validation purposes. </span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">clusters =</span> clusters<span class="sc">$</span>clusters, <span class="do">## we have precomputed cluster labels so we pass them here</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="dv">5</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="at">return_silhouettes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="at">return_history =</span> <span class="cn">TRUE</span>,  <span class="co"># Get detailed training history</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="at">return_model =</span> <span class="cn">TRUE</span>, <span class="do">## Allows for plotting model schematic</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="at">device =</span> <span class="st">&quot;cpu&quot;</span>,  <span class="co"># Explicit device selection</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="at">layer_order_enc =</span> <span class="fu">c</span>(<span class="st">&quot;unshared&quot;</span>, <span class="st">&quot;shared&quot;</span>, <span class="st">&quot;unshared&quot;</span>),</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="at">layer_order_dec =</span> <span class="fu">c</span>(<span class="st">&quot;shared&quot;</span>, <span class="st">&quot;unshared&quot;</span>, <span class="st">&quot;shared&quot;</span>),</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="at">return_validation_dataset =</span> <span class="cn">TRUE</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>)</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste</span>(<span class="st">&quot;Check necessary returns:&quot;</span>, <span class="fu">paste0</span>(<span class="fu">names</span>(result), <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>)))</span></code></pre></div>
+<pre><code>## Check necessary returns: imputed_dataset, model, training_history, val_data, val_imputed</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">performance_by_cluster</span>(<span class="at">res =</span> result, </span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">group_col =</span> <span class="cn">NULL</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">clusters =</span> clusters<span class="sc">$</span>clusters,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">feature_cols =</span> <span class="cn">NULL</span>, <span class="do">## default, all numeric columns excluding group_col &amp; cols_ignore</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">by_group =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">by_cluster =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">cols_ignore =</span>  <span class="fu">c</span>( <span class="st">&quot;index&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Salary&quot;</span>, <span class="st">&quot;ZipCode10001&quot;</span>, <span class="st">&quot;ZipCode20002&quot;</span>, <span class="st">&quot;ZipCode30003&quot;</span>) <span class="do">## columns to not score</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  )</span></code></pre></div>
+<pre><code>## $overall
+##     metric     n
+## 1 90.99783 13783
+## 
+## $per_cluster
+##   cluster mean_imputation_loss    n
+## 1       0             48.70336 3408
+## 2       1             96.68600 1787
+## 3       2             80.57138 5000
+## 4       3            142.86713 3588
+## 
+## $per_feature_overall
+##    feature       type mean_imputation_loss   n
+## 1      Y11 continuous            41.565153 486
+## 2      Y12 continuous            89.328866 486
+## 3      Y13 continuous           119.401816 488
+## 4      Y14 continuous           160.124733 486
+## 5      Y15 continuous           252.965269 484
+## 6      Y21 continuous            66.576460 485
+## 7      Y22 continuous           137.619200 489
+## 8      Y23 continuous           127.223039 489
+## 9      Y24 continuous           202.076766 484
+## 10     Y25 continuous           234.807206 488
+## 11     Y31 continuous            47.142491 592
+## 12     Y32 continuous            87.786836 593
+## 13     Y33 continuous           146.073318 597
+## 14     Y34 continuous           168.344495 593
+## 15     Y35 continuous           205.363351 593
+## 16     Y41 continuous             7.179157 596
+## 17     Y42 continuous            18.288482 596
+## 18     Y43 continuous            37.223463 597
+## 19     Y44 continuous            47.033124 597
+## 20     Y45 continuous            61.172087 590
+## 21     Y51 continuous             5.400970 591
+## 22     Y52 continuous            19.634923 595
+## 23     Y53 continuous            24.613987 601
+## 24     Y54 continuous            26.400094 594
+## 25     Y55 continuous            37.428103 593</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
