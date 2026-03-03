@@ -22,7 +22,7 @@ version is found on the system.}
 \item{python_version}{Python version string (major.minor), used when installing Python.}
 }
 \value{
-NULL. Does not return anything
+NULL. Called for side effects.
 }
 \description{
 This function will either find an existing virtualenv by name (in

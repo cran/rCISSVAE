@@ -1,6 +1,6 @@
 Package: rCISSVAE
 Title: Clustering-Informed Shared-Structure VAE for Imputation
-Version: 0.0.4
+Version: 0.0.5
 Authors@R: 
     c(  person(given = "Yasin", family = "Khadem Charvadeh", email = "khademy@mskcc.org", role = c("aut")),
         person(given = "Kenneth", family = "Seier", role = c("aut")),
@@ -14,7 +14,7 @@ Description: Implements the Clustering-Informed Shared-Structure Variational Aut
 License: MIT + file LICENSE
 Encoding: UTF-8
 Depends: R (>= 4.2.0)
-Imports: reticulate, purrr, gtsummary, rlang, ComplexHeatmap
+Imports: reticulate, purrr, gtsummary, rlang, ComplexHeatmap, stats
 Suggests: testthat (>= 3.0.0), dplyr, knitr, rmarkdown, tidyverse,
         kableExtra, MASS, fastDummies, palmerpenguins, glue, withr,
         ggplot2
@@ -25,7 +25,7 @@ VignetteBuilder: knitr
 RoxygenNote: 7.3.3
 LazyData: true
 NeedsCompilation: no
-Packaged: 2026-01-20 15:01:31 UTC; vaithid1
+Packaged: 2026-03-03 14:51:00 UTC; vaithid1
 Author: Yasin Khadem Charvadeh [aut],
   Kenneth Seier [aut],
   Katherine S. Panageas [aut],
@@ -33,4 +33,4 @@ Author: Yasin Khadem Charvadeh [aut],
   Mithat Gönen [aut],
   Yuan Chen [aut]
 Repository: CRAN
-Date/Publication: 2026-01-23 21:20:07 UTC
+Date/Publication: 2026-03-03 16:10:02 UTC

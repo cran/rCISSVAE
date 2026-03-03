@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2026-01-20" />
+<meta name="date" content="2026-03-03" />
 
 <title>Summary Functions</title>
 
@@ -339,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Summary Functions</h1>
-<h4 class="date">2026-01-20</h4>
+<h4 class="date">2026-03-03</h4>
 
 
 <div id="TOC">
@@ -1232,43 +1232,15 @@ part of the return object. Otherwise, use the ‘clusters’ parameter in
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">cols_ignore =</span>  <span class="fu">c</span>( <span class="st">&quot;index&quot;</span>, <span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Salary&quot;</span>, <span class="st">&quot;ZipCode10001&quot;</span>, <span class="st">&quot;ZipCode20002&quot;</span>, <span class="st">&quot;ZipCode30003&quot;</span>) <span class="do">## columns to not score</span></span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>## $overall
-##     metric     n
-## 1 90.99783 13783
+##        mse bce imputation_error
+## 1 90.99783  NA         90.99783
 ## 
 ## $per_cluster
-##   cluster mean_imputation_loss    n
-## 1       0             48.70336 3408
-## 2       1             96.68600 1787
-## 3       2             80.57138 5000
-## 4       3            142.86713 3588
-## 
-## $per_feature_overall
-##    feature       type mean_imputation_loss   n
-## 1      Y11 continuous            41.565153 486
-## 2      Y12 continuous            89.328866 486
-## 3      Y13 continuous           119.401816 488
-## 4      Y14 continuous           160.124733 486
-## 5      Y15 continuous           252.965269 484
-## 6      Y21 continuous            66.576460 485
-## 7      Y22 continuous           137.619200 489
-## 8      Y23 continuous           127.223039 489
-## 9      Y24 continuous           202.076766 484
-## 10     Y25 continuous           234.807206 488
-## 11     Y31 continuous            47.142491 592
-## 12     Y32 continuous            87.786836 593
-## 13     Y33 continuous           146.073318 597
-## 14     Y34 continuous           168.344495 593
-## 15     Y35 continuous           205.363351 593
-## 16     Y41 continuous             7.179157 596
-## 17     Y42 continuous            18.288482 596
-## 18     Y43 continuous            37.223463 597
-## 19     Y44 continuous            47.033124 597
-## 20     Y45 continuous            61.172087 590
-## 21     Y51 continuous             5.400970 591
-## 22     Y52 continuous            19.634923 595
-## 23     Y53 continuous            24.613987 601
-## 24     Y54 continuous            26.400094 594
-## 25     Y55 continuous            37.428103 593</code></pre>
+##   cluster       mse bce imputation_error
+## 1       0  48.70336  NA         48.70336
+## 2       1  96.68600  NA         96.68600
+## 3       2  80.57138  NA         80.57138
+## 4       3 142.86713  NA        142.86713</code></pre>
 </div>
 
 
